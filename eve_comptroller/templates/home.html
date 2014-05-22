@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>Welcome to {{ context.title }}.</p> 
+
+<ul> 
+	<li><a href="{{ request.resource_url(context, 'register') }}">register</a></li>
+</ul>
+
+{% endblock content %}

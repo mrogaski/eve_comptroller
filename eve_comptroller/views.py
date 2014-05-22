@@ -3,21 +3,31 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from .models import (
-    DBSession,
-    MyModel,
-    )
+from .resources import (Root,
+                        Registration,
+                        Activation, 
+                        Preferences, 
+                        Admin)
+
+from .models import (DBSession,
+                     MyModel)
 
 
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
-def my_view(request):
-    try:
-        one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'eve_comptroller'}
+class EveComptrollerViews(object):
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
-conn_err_msg = """\
+    @view_config(renderer='templates/home.html')
+    def home(self):
+        page_title = 'Home'
+        try:
+            one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
+        except DBAPIError:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        return dict(page_title=page_title)
+
+    conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
 
@@ -32,4 +42,10 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
+
+    @view_config(context=Registration, 
+                 renderer='templates/register.html')
+    def register(self):
+        page_title = 'Register'
+        return dict(page_title=page_title)
 

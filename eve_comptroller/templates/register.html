@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>Welcome to {{ context.title }}. Visit 
+<a href="{{ request.resource_url(context.__parent__) }}">home</a></p>
+
+{% endblock content %}
