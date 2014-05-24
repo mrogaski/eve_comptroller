@@ -4,17 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     
-    <link class="ui" rel="stylesheet" type="text/css" class="ui" href="/static/semantic/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" class="ui" href="/static/semantic/css/semantic.min.css">
     <link rel="stylesheet" type="text/css" class="ui" href="/static/semantic/css/semantic.css">
+    <link rel="stylesheet" type="text/css" class="ui" href="/static/css/theme.css">
     <script src="/static/semantic/javascript/semantic.min.js"></script>
     <script src="/static/semantic/javascript/semantic.js"></script>
 
     {% block head %}
-      <title>EVE Comptroller: {{ context.title }}</title>
+      <title>EVE Comptroller: {{ page_title }}</title>
     {% endblock %}
   </head>
   <body>
-	{% block content %}
-	{% endblock %}
+    <div class="ui inverted menu">
+      <a class="item" href="{{ request.resource_url(context) }}">
+	    <i class="home icon"></i> Home
+      </a>
+      {% if request.authenticated_userid != None %}
+      <a class="item">
+        <i class="money icon"></i> Accountant
+      </a>
+      <a class="item">
+        <i class="moon icon"></i> POS Manager
+      </a>
+      {% endif %}
+      <div class="right menu">
+        <a class="item">
+          <i class="user icon"></i> User
+        </a>
+      </div>      
+  	</div>
+  	<div class="vertical segment">
+	  {% block content %}
+	  {% endblock %}
+	</div>
   </body>
 </html>

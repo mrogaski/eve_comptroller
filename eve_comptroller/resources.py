@@ -10,12 +10,6 @@ class Root(Resource):
     def __init__(self, title):
         self.title = title
 
-class Registration(Resource):
-    pass
-
-class Activation(Resource):
-    pass
-          
 class Admin(Resource):
     pass
 
@@ -26,8 +20,6 @@ root = Root('Home')
 
 def bootstrap(request):
     if not root.values():
-        root['register'] = Registration('register', root, 'Registration')
-        root['activate'] = Activation('activate', root, 'Activation')
         root['pref'] = Preferences('pref', root, 'Preferences')
         root['admin'] = Admin('admin', root, 'Administration')
 
