@@ -10,18 +10,18 @@ class Root(Resource):
     def __init__(self, title):
         self.title = title
 
-class Admin(Resource):
+class Accountant(Resource):
     pass
 
-class Preferences(Resource):
+class PosManager(Resource):
     pass
 
 root = Root('Home')
 
 def bootstrap(request):
     if not root.values():
-        root['pref'] = Preferences('pref', root, 'Preferences')
-        root['admin'] = Admin('admin', root, 'Administration')
+        root['acct'] = Accountant('acct', root, 'Accountant')
+        root['pos'] = PosManager('pos', root, 'POS Manager')
 
     return root
 

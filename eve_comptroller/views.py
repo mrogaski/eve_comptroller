@@ -3,9 +3,9 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from .resources import (Root,
-                        Preferences, 
-                        Admin)
+from .resources import (Resource,
+                        Accountant,
+                        PosManager)
 
 from .models import (DBSession,
                      MyModel)
