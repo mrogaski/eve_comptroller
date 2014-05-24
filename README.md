@@ -13,5 +13,5 @@ Getting Started
 
 - $VENV/bin/initialize_eve_comptroller_db development.ini
 
-- $VENV/bin/pserve development.ini
+- $VENV/bin/pserve development.ini --reload
 
