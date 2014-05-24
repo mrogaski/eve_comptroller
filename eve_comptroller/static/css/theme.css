@@ -1,0 +1,15 @@
+html,
+body {
+    font-family: 'Open Sans', "Helvetica Neue", Arial, Helvetica, sans-serif !important;
+    height: 100%;
+    font-size: 15px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
+

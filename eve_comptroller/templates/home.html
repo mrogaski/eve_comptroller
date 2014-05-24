@@ -1,10 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-
-<p>Welcome to {{ context.title }}.</p> 
-
-<ul> 
-	<li><a href="{{ request.resource_url(context, 'register') }}">register</a></li>
-</ul>
-
+        {% if request.authenticated_userid == None %}
+        <div class="ui two column middle aligned relaxed grid basic segment">
+          <div class="center aligned column">
+            <form name="register" method="get" action="{{ request.resource_url(context, route_name='register') }}">
+              <button class="huge green ui labeled icon button" type="submit">
+                <i class="signup icon"></i>
+                Sign Up
+              </button>
+            </form>
+          </div>
+          <div class="ui vertical divider">
+            Or
+          </div>
+          <div class="column">
+            <form name="login" method="post" action="{{ request.resource_url(context, route_name='register') }}">
+              <div class="ui form segment">
+                <div class="field">
+                  <label>Username</label>
+                  <div class="ui left labeled icon input">
+                    <input placeholder="Username" type="text" name="username">
+                    <i class="user icon"></i>
+                    <div class="ui corner label">
+                      <i class="asterisk icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Password</label>
+                  <div class="ui left labeled icon input">
+                    <input type="password" name="password" placeholder="Password">
+                    <i class="lock icon"></i>
+                    <div class="ui corner label">
+                      <i class="asterisk icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <input class="ui blue submit button" type="submit" value="Login">
+              </div>
+            </form> 
+          </div>
+        </div>        
+        {% else %}
+        <p>Welcome to {{ page_title }}.</p> 
+        <ul> 
+          <li><a href="{{ request.resource_url(context, route_name='register') }}">register</a></li>
+        </ul>
+        {% endif %}
 {% endblock content %}

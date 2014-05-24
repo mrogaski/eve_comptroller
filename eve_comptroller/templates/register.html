@@ -1,7 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-
-<p>Welcome to {{ context.title }}. Visit 
-<a href="{{ request.resource_url(context.__parent__) }}">home</a></p>
-
+        <div class="ui grid relaxed">
+          <div class="two wide column"></div>
+          <div class="twelve wide column">
+            <form class="ui form segment">
+                <div class="two fields">
+                  <div class="field">
+                    <label>Username</label>
+                    <div class="ui left labeled icon input">
+                      <input placeholder="Username" type="text" name="username">
+                      <i class="user icon"></i>
+                      <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>E-mail Address</label>
+                    <div class="ui left labeled icon input" name="email">
+                      <input placeholder="E-mail Address" type="text">
+                      <i class="mail icon"></i>
+                      <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="two fields">
+                  <div class="field">
+                    <label>Password</label>
+                    <div class="ui left labeled icon input">
+                      <input placeholder="Password" type="password" name="password">
+                      <i class="key icon"></i>
+                      <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Password Verification</label>
+                    <div class="ui left labeled icon input">
+                      <input placeholder="Password" type="password" name="password2">
+                      <i class="key icon"></i>
+                      <div class="ui corner label">
+                        <i class="icon asterisk"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
 {% endblock content %}
