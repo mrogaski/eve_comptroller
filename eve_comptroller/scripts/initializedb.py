@@ -6,11 +6,8 @@ from sqlalchemy import engine_from_config
 from pyramid.paster import get_appsettings, setup_logging
 from pyramid.scripts.common import parse_vars
 
-from ..models import (
-    DBSession,
-    Base,
-    )
-
+from ..models import DBSession, Base, User
+from ..hash import create_hash
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -29,4 +26,9 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-
+    with transaction.manager:
+        email = raw_input('Enter e-mail address for admin account: ')
+        password = raw_input('Enter password for admin account: ')
+        user = User(name='admin', email=email, password=create_hash(password), is_admin=True)
+        DBSession.add(user)
+        

@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Index, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, Index, ForeignKey, Integer, String, Boolean, Date, DateTime
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
-
 from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -11,11 +10,13 @@ Base = declarative_base()
 
 class User(Base):
     """The primary record for the system user."""
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(128))
     email = Column(String(254))
     password = Column(String(128))
+    is_admin = Column(Boolean(create_constraint=True))
+    last_login = Column(DateTime(timezone=True))
 
 
 class UserValidation(Base):
