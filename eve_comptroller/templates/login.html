@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+        <div class="ui grid relaxed">
+          <div class="two wide column"></div>
+          <div class="twelve wide column">
+            {{ renderer.begin(request.resource_url(context, route_name='login')) }}
+              {% if error_message %}
+              <div class="ui error message">
+                <p>{{ error_message }}</p>
+              </div>
+              {% endif %}
+              {% if warning_message %}
+              <div class="ui warning message">
+                <p>{{ warning_message }}</p>
+              </div>
+              {% endif %}
+              <div class="ui form segment">
+                <div class="field">
+                  <label>Username</label>
+                  <div class="ui left labeled icon input">
+                    {{ renderer.text('username', placeholder='Username') }}
+                    <i class="user icon"></i>
+                    <div class="ui corner label">
+                      <i class="asterisk icon"></i>
+                    </div>
+                    {% if renderer.errorlist('username') %}
+                    <div class="ui red pointing above ui label">{{ renderer.errorlist('username') }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Password</label>
+                  <div class="ui left labeled icon input">
+                    {{ renderer.password('password', placeholder='Password') }}
+                    <i class="lock icon"></i>
+                    <div class="ui corner label">
+                      <i class="asterisk icon"></i>
+                    </div>
+                    {% if renderer.errorlist('password') %}
+                    <div class="ui red pointing above ui label">{{ renderer.errorlist('password') }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {{ renderer.submit('login', 'Login', class='ui blue submit button') }}
+              </div>
+            {{ renderer.end() }} 
+          </div>
+       </div>
+{% endblock content %}

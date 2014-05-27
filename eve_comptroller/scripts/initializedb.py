@@ -29,6 +29,6 @@ def main(argv=sys.argv):
     with transaction.manager:
         email = raw_input('Enter e-mail address for admin account: ')
         password = raw_input('Enter password for admin account: ')
-        user = User(name='admin', email=email, password=create_hash(password), is_admin=True)
+        user = User(username='admin', email=email, password=create_hash(password), is_admin=True)
         DBSession.add(user)
         

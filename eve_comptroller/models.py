@@ -12,7 +12,7 @@ class User(Base):
     """The primary record for the system user."""
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    name = Column(String(128))
+    username = Column(String(128), unique=True)
     email = Column(String(254))
     password = Column(String(128))
     is_admin = Column(Boolean(create_constraint=True))
@@ -34,7 +34,7 @@ class UserValidation(Base):
 
 class UserActivation(UserValidation):
     """Child class for new user e-mail address validation and account activation."""
-    name = Column(String(128))
+    username = Column(String(128), unique=True)
     email = Column(String(254))
     password = Column(String(128))
     
