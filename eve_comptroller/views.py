@@ -8,10 +8,10 @@ from pyramid_simpleform import Form
 from pyramid_simpleform.renderers import FormRenderer
 
 
-from .models import DBSession, User
-from .resources import Resource, Accountant, PosManager
-from .hash import check_hash
-from .forms import LoginSchema
+from eve_comptroller.models import DBSession, User
+from eve_comptroller.resources import Resource, Accountant, PosManager
+from eve_comptroller.auth import check_credentials
+from eve_comptroller.forms import LoginSchema
 
 class EveComptrollerViews(object):
     def __init__(self, context, request):
@@ -53,8 +53,7 @@ class EveComptrollerViews(object):
         if form.validate():
             username = form.data['username']
             password = form.data['password']
-            user = DBSession.query(User).filter(User.username == username).one()
-            if check_hash(password, user.password):
+            if check_credentials(username, password):
                 headers = remember(self.request, username)
                 return HTTPFound(location=target, headers=headers)
             else:
@@ -63,7 +62,6 @@ class EveComptrollerViews(object):
         return dict(renderer=FormRenderer(form),
                     page_title=page_title,
                     error_message=error_message,
-                    target=target,
                     username=username,
                     password=password)
             

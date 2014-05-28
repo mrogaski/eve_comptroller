@@ -6,8 +6,8 @@ from sqlalchemy import engine_from_config
 from pyramid.paster import get_appsettings, setup_logging
 from pyramid.scripts.common import parse_vars
 
-from ..models import DBSession, Base, User
-from ..hash import create_hash
+from eve_comptroller.models import DBSession, Base, User
+from eve_comptroller.auth import create_hash
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
