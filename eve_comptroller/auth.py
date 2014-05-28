@@ -63,3 +63,13 @@ def check_credentials(username, password):
         pass
     return False
 
+def list_groups(username, request):
+    groups = []
+    try:
+        user = DBSession.query(User).filter(User.username == username).one()
+        if user.is_admin:
+            groups.append('admin')
+    except:
+        return
+    return groups
+

@@ -1,10 +1,10 @@
 from pyramid.config import Configurator
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
 from sqlalchemy import engine_from_config
 
-from .models import (
-    DBSession,
-    Base,
-    )
+from eve_comptroller.models import DBSession, Base
+from eve_comptroller.auth import list_groups
 
 
 def main(global_config, **settings):
@@ -14,6 +14,16 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
+    
+    authn_policy = AuthTktAuthenticationPolicy(settings['eve_comptroller.secret'],
+                                               callback=list_groups,
+                                               hashalg=settings['eve_comptroller.hashalg'],
+                                               timeout=int(settings['eve_comptroller.timeout']),
+                                               max_age=int(settings['eve_comptroller.max_age']))
+    authz_policy = ACLAuthorizationPolicy()
+    config.set_authentication_policy(authn_policy)
+    config.set_authorization_policy(authz_policy)
+    
     config.include('pyramid_jinja2')
     config.add_jinja2_renderer('.html')
     config.add_static_view('static', 'static', cache_max_age=3600)
