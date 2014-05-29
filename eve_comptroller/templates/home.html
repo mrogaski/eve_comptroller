@@ -44,7 +44,7 @@
         {% else %}
         <p>Welcome to {{ page_title }}.</p> 
         <ul> 
-          <li><a href="{{ request.resource_url(context, route_name='register') }}">register</a></li>
+          <li><a href="{{ request.resource_url(context, route_name='login') }}">register</a></li>
         </ul>
         {% endif %}
 {% endblock content %}

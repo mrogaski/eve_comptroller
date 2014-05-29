@@ -32,6 +32,7 @@ def main(global_config, **settings):
     config.add_route('register', '/auth/register')
     config.add_route('activate', '/auth/activate')
     config.add_route('login', '/auth/login')
+    config.add_route('logout', '/auth/logout')
     config.add_route('app', '/app/*traverse',
                      factory='eve_comptroller.resources.bootstrap')
     config.scan('.views')

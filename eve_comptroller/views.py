@@ -69,5 +69,9 @@ class EveComptrollerViews(object):
                     username=username,
                     password=password)
             
-
+    @view_config(route_name='logout')
+    def logout(self):
+        page_title = 'Logout'
+        headers = forget(self.request)
+        return HTTPFound(location='/', headers=headers)
 
