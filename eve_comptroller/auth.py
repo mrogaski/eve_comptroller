@@ -1,21 +1,24 @@
 import hashlib
+import logging
+log = logging.getLogger(__name__)
 from os import urandom
 from base64 import b64encode, b64decode
 
 from pbkdf2 import PBKDF2
 
+from eve_comptroller import settings
 from eve_comptroller.models import DBSession, User
+
 
 #
 # Password hashing.
 #
-HASH_NAME = 'SHA256'
-HASH_FUNCTION = hashlib.sha256
-KEY_LENGTH = 32     # bytes
-SALT_LENGTH = 16    # bytes
-COST_FACTOR = 1000
 
-def create_hash(password):
+def create_hash(password, 
+                hmac='sha512', 
+                iterations=settings.auth_iterations,
+                key_len=settings.auth_key_len,
+                salt_len=settings.auth_salt_len):
     """
     Generate a random salt and hash the password per NIST 800-132 recommendation.
     
@@ -25,10 +28,11 @@ def create_hash(password):
     """
     if isinstance(password, unicode):
         password = password.encode('utf-8')
-    salt = urandom(SALT_LENGTH)
-    key = PBKDF2(password, salt, COST_FACTOR, HASH_FUNCTION).read(KEY_LENGTH)
-    return 'PBKDF2$%s$%s$%s$%s' % (HASH_NAME,
-                                   COST_FACTOR,
+    salt = urandom(salt_len)
+    key = PBKDF2(password, salt, iterations, getattr(hashlib, hmac)).read(key_len)
+    return 'PBKDF2$%s$%s$%s$%s$%s' % (hmac.upper(),
+                                   key_len,
+                                   iterations,
                                    b64encode(salt),
                                    b64encode(key))
 
@@ -42,13 +46,17 @@ def check_hash(password, hash):
     """
     if isinstance(password, unicode):
         password = password.encode('utf-8')
-    kdf, hf, cost, salt, key_a = hash.split('$')
-    assert kdf == 'PBKDF2'
-    assert hf == HASH_NAME
-    cost = int(cost)
+    kdf, hmac, key_len, iterations, salt, key_a = hash.split('$')
+    hmac = hmac.lower()
+    key_len = int(key_len)
+    iterations = int(iterations)
     salt = b64decode(salt)
     key_a = b64decode(key_a)
-    key_b = PBKDF2(password, salt, cost, HASH_FUNCTION).read(KEY_LENGTH)
+    
+    assert kdf == 'PBKDF2'
+    assert hmac in hashlib.algorithms
+    
+    key_b = PBKDF2(password, salt, iterations, getattr(hashlib, hmac)).read(key_len)
     return key_a == key_b
 
 #
