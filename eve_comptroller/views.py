@@ -1,3 +1,6 @@
+import logging
+log = logging.getLogger(__name__)
+
 from pyramid.response import Response
 from pyramid.view import view_config, forbidden_view_config
 from pyramid.httpexceptions import HTTPFound
@@ -42,11 +45,12 @@ class EveComptrollerViews(object):
         error_message = ''
         username = ''
         password = ''
-        login_url = self.request.resource_url(self.request.context, 'login')
+        login_url = self.request.route_url('login')
         referer = self.request.referer
-        if referer == login_url:
-            referer = '/'
-        target = self.request.params.get('target', referer)
+        if referer is None or referer == login_url:
+            target = '/'
+        else:
+            target = referer
 
         form = Form(self.request,schema=LoginSchema())
         
